@@ -1,11 +1,14 @@
 #include "AlgoKeeper.h"
 
+
 bool AlgoKeeper::NaivePatternSearch(string text,string pattern) const
 {
 	int i=-1;
 	int j=-1;
 	int k;
-	for(i=0;i<text.length();i++)
+	auto textLength = text.length();
+	auto patternLength = pattern.length();
+	for(i=0;i<textLength;i++)
 	{
 		k=0;
 		if(text[i] == pattern[k]) //first character Match
@@ -20,11 +23,51 @@ bool AlgoKeeper::NaivePatternSearch(string text,string pattern) const
 	}
 	return false;
 }
-bool AlgoKeeper::RabinKarpPatternSearch(string text,string _pattern) const
+bool AlgoKeeper::RabinKarpPatternSearch(string text,string pattern) const
 {
-	return "Not Implemented";
+	int i=-1;
+	auto textLength = text.length();
+	auto patternLength = pattern.length();
+	auto patternHash = calculateStringHash(pattern,0,patternLength);
+	auto textHash = calculateStringHash(text,0,patternLength);
+	//cout<<"Calculated hash"<<patternHash;
+	for(i=0;i<textLength-patternLength;i++)
+	{
+		//cout<<endl<<"Calculated String hash"<<textHash;
+		//cout<<" "<<text.at(i);
+		if(textHash == patternHash)
+		{
+			return true;
+		}
+		textHash = (textHash)/HASHVALUE - ((int)text.at(i) -96 ) + ((int)text.at(i+patternLength)-96)*std::pow(HASHVALUE,patternLength);
+	}
+	return false;
 }
 bool AlgoKeeper::KMPPatternSearch(string text,string _pattern) const
 {	
 	return "Not implemented";
 }
+
+//Helper Functions
+
+int AlgoKeeper::calculateStringHash(string str,int begin,int end) const//begin inclusive and end exclusive
+{
+	int hash = 0;
+	int k = 1;
+	for(int i=begin;i<end;i++)
+	{		
+		hash+=(((int)str.at(i)-96) * std::pow(HASHVALUE,k));
+		k++;
+	}
+	return hash;
+}
+
+
+
+
+
+
+
+
+
+
