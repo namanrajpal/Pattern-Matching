@@ -48,6 +48,18 @@ bool AlgoKeeper::KMPPatternSearch(string text,string _pattern) const
 	return "Not implemented";
 }
 
+bool AlgoKeeper::TriePatternSearch(std::vector<string> texts,string pattern) const
+{
+	Trie myTrie;
+	for(string s: texts)
+		myTrie.insert(s);
+	
+	return myTrie.search(pattern);
+}
+		
+
+
+
 //Helper Functions
 
 int AlgoKeeper::calculateStringHash(string str,int begin,int end) const//begin inclusive and end exclusive
